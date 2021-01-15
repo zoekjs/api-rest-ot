@@ -1,30 +1,39 @@
-import { Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, Column} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, Column, BaseEntity } from 'typeorm';
 import { WorkOrder } from '../../work-order/entities/workOrder.entity';
 
 @Entity()
-export class WorkOrderDetail {
-    @PrimaryGeneratedColumn()
-    work_order_detail_id: number;
+export class WorkOrderDetail extends BaseEntity {
+  @PrimaryGeneratedColumn({ name: 'id' })
+  public id: number;
 
-    @Column()
-    quantity: number;
+  @Column()
+  public quantity: number;
 
-    @Column({ length: 255})
-    description: string;
+  @Column({ length: 255 })
+  public description: string;
 
-    @Column()
-    price: number;
+  @Column()
+  public price: number;
 
-    @Column()
-    work_order_id: number;
+  @ManyToOne(type => WorkOrder)
+  public workOrder: number;
 
-    @CreateDateColumn({ name: 'created_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP',})
-    createAt: Date;
+  @CreateDateColumn({ name: 'created_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', })
+  public created_at: Date;
 
-    @UpdateDateColumn({ name: 'updated_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP',})
-    updatedAt: Date;
+  @UpdateDateColumn({ name: 'updated_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', })
+  public updated_at: Date;
 
-    @ManyToOne( type => WorkOrder, {cascade: true})
-    @JoinColumn({ name: 'work_order_id'})
-    workOrder: WorkOrder; 
+  constructor(data: any = null) {
+    super();
+    if (data) {
+      this.id = data.id;
+      this.quantity = data.quantity;
+      this.description = data.description;
+      this.price = data.price;
+      this.workOrder = data.workOrder;
+      this.created_at = data.created_at;
+      this.updated_at = data.updated_at;
+    }
+  }
 }

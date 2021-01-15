@@ -7,10 +7,6 @@ import { WorkOrderModule } from './work-order/work-order.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { WorkOrderDetailModule } from './work-order-detail/work-order-detail.module';
 
-
-
-
-
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -29,4 +25,4 @@ import { WorkOrderDetailModule } from './work-order-detail/work-order-detail.mod
   controllers: [AppController,],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

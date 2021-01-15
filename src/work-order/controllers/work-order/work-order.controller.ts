@@ -15,9 +15,9 @@ export class WorkOrderController {
         return res.status(HttpStatus.OK).json({ workOrders })
     }
 
-    @Get('/:rut')
-    async getWorkOrdersByClient(@Param() rut: number): Promise<WorkOrder[]> {
-        return await this.workOrderService.getWorkOrdersByClient(rut);
+    @Get('/:client')
+    async getWorkOrdersByClient(@Param() param: any): Promise<WorkOrder[]> {
+        return await this.workOrderService.getWorkOrdersByClient(param.client);
     }
 
     @Get(':id')

@@ -25,6 +25,7 @@ export class ClientsService {
         const count = await this.clientRepo.count(createClientDTO);
         if(count > 0) throw new BadRequestException({status: 'error', message: 'El cliente ya existe en el sistema :('})
         else{
+            console.log(createClientDTO)
             const client = this.clientRepo.create(createClientDTO);    
             return await this.clientRepo.save(client);
         }

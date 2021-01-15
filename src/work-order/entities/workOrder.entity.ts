@@ -1,25 +1,46 @@
-import { Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToMany, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, OneToMany, BaseEntity, Column } from 'typeorm';
 import { Client } from '../.././clients/entities/clients.entity';
 import { WorkOrderDetail } from '../../work-order-detail/entities/workOrderDetail.entity';
 
 @Entity()
-export class WorkOrder {
-    @PrimaryGeneratedColumn()
-    work_order_id: number;
+export class WorkOrder extends BaseEntity {
+  @PrimaryGeneratedColumn()
+  public id: number;
 
-    @Column()
-    client_rut: number;
+  @Column()
+  public brand: string;
 
-    @CreateDateColumn({ name: 'created_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP',})
-    createdAt: Date;
+  @Column()
+  public model: string;
 
-    @UpdateDateColumn({ name: 'updated', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
-    updatedAt: Date;
+  @Column({ name: "total", nullable: true})
+  public total: number;
 
-    @ManyToOne(type => Client, {cascade: true, eager: true, nullable:false})
-    @JoinColumn({name: 'client_rut'})
-    client: Client;
-    
-    @OneToMany(() => WorkOrderDetail, workOrderDetail => workOrderDetail.workOrder)
-    workOrderDetails: WorkOrderDetail[];
+  @ManyToOne(type => Client, { nullable: false, onDelete: 'CASCADE' })
+  public client: number;
+
+  @OneToMany(() => WorkOrderDetail, workOrderDetail => workOrderDetail.workOrder, { cascade: true, eager: true })
+  public workOrderDetails: WorkOrderDetail[];
+
+  @CreateDateColumn({ name: 'created_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', })
+  public created_at: Date;
+
+  @UpdateDateColumn({ name: 'updated_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', })
+  public updated_at: Date;
+
+  constructor(data: any = null) {
+    super();
+    if (data) {
+      this.id = data.id;
+      this.client = data.client;
+      this.brand = data.brand;
+      this.model = data.model;
+      this.total = data.total;
+      this.workOrderDetails = (data.workOrderDetails)
+        ? data.workOrderDetails.map((workOrderDetails: WorkOrderDetail) => new WorkOrderDetail(workOrderDetails))
+        : null;
+      this.created_at = data.created_at;
+      this.updated_at = data.updated_at;
+    }
+  }
 } 

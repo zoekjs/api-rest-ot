@@ -24,9 +24,9 @@ export class ClientsController {
         });
     }
 
-    @Get('/:rut')
-    async getClient(@Res() res, @Param() rut: number) {
-        const client = await this.clientService.getClient(rut)
+    @Get('/:id')
+    async getClient(@Res() res, @Param() param: any) {
+        const client = await this.clientService.getClient(param.id)
         if(!client) throw new NotFoundException({ message: 'El cliente que busca no existe en nuestros registros'})
         return res.status(HttpStatus.OK).json({client})
     }
@@ -46,6 +46,5 @@ export class ClientsController {
         }else{
             throw new NotFoundException({ message: 'El cliente que desea eliminar no existe en nuestros registros'})
         }
-        
     }
 }

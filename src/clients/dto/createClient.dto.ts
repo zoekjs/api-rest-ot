@@ -11,4 +11,5 @@ export class CreateClientDTO {
     readonly phone: string; 
     @IsNotEmpty({ message: "La dirección es obligatoria"})
     readonly address: string;
+    readonly email: string;
 }

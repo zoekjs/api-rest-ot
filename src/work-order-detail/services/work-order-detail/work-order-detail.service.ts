@@ -9,9 +9,8 @@ import { WorkOrderDetail } from '../../interfaces/workOrderDetail';
 export class WorkOrderDetailService {
     constructor(@InjectRepository(WorkOrderDetailEnt) private readonly workOrderDetailRepo: Repository<WorkOrderDetail>) { }
 
-    async getWorkOrderDetail(work_order_id: number): Promise<WorkOrderDetail[]> {
-        const workOrderDetail = await this.workOrderDetailRepo.find({ where: { work_order_id: work_order_id }, relations: ["workOrder"] });
-        console.log(workOrderDetail)
+    async getWorkOrderDetail(workOrder: number): Promise<WorkOrderDetail[]> {
+        const workOrderDetail = await this.workOrderDetailRepo.find({ where: { workOrder: workOrder }});
         if (workOrderDetail.length == 0) { throw new NotFoundException({ message: 'No hay detalles para mostrar' }) }
         return workOrderDetail;
     }
@@ -25,8 +24,6 @@ export class WorkOrderDetailService {
         const updateDetail = await this.workOrderDetailRepo.findOne(id)
         this.workOrderDetailRepo.merge(updateDetail, updateWorkOrderDetailDTO)
         return this.workOrderDetailRepo.save(updateDetail);
-
-
     }
 
     async deleteDetail(workOrderDetailId: number) {

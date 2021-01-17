@@ -8,9 +8,9 @@ import { WorkOrderDetailService } from 'src/work-order-detail/services/work-orde
 export class WorkOrderDetailController {
     constructor(private workOrderDetailService: WorkOrderDetailService ){}
 
-    @Get('/:work_order_id')
-    async getDetails(@Param() workOrderId): Promise<WorkOrderDetail[]>{
-        return await this.workOrderDetailService.getWorkOrderDetail(workOrderId);
+    @Get('/:workOrder')
+    async getDetails(@Param() param): Promise<WorkOrderDetail[]>{
+        return await this.workOrderDetailService.getWorkOrderDetail(param.workOrder);
     }
 
     @Post()
